@@ -1,11 +1,51 @@
-{#
- # Template for an HTML story published to P2P.
- #
- # If you want to publish multiple HTML stories, copy, or inherit from
- # this template.
- #
- #}
+{% set data = merge_data(cubs=CUBS_DATA, brewers=BREWERS_DATA) %}
+
+{% macro standings_block(team) %}
+	{% set svg_url = team|team_lookup('abbrev') %}
+	{% set team_name = team|team_lookup('readable') %}
+	{{ data[team] }}
+	<div class='standing standing--{{ team }}'>
+
+		<h2 class='standing__place'>1st PLACE</h2>
+		<div class='standing__logo'>
+			<svg class="arrow-right">
+			  <use xlink:href="#{{ svg_url }}" />
+			</svg>
+		</div>
+		<h3 class='standing__team'>{{ team_name }}</h3>
+		<dl class='standing__stats'>
+			<dt>Record</dt>
+			<dd>XX-XX</dd>			
+			<dt>Games back</dt>
+			<dd>XX</dd>
+		</dl>
+	</div>
+
+{% endmacro%}
+
+{# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
+
+
+{{ data[0]['full_name'] }}
+
 {% block content %}
+	<div style='display:none;height:0'>{% include 'img/sprite.svg' %}</div>
+	<div class='graphic-wrapper'>
+		<section class='intro'>
+			{{ intro|markdown }}
+			<p>Standings as of {{ updated_date|format_date_time('s') }}</p>
+		</section>
+		<section class='standings'>
+
+			{% for team in ['cubs', 'cardinals', 'pirates', 'brewers', 'astros'] %}
+				{{ standings_block(team) }}
+			{% endfor %}			
+		</section>
+
+		<section class='horse-race'>
+			<div id='horse-race' class='chart'></div>
+		</section>
+	</div>
 {% endblock content %}
 
 {% block library_scripts %}
