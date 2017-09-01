@@ -8,6 +8,7 @@ import ftfy
 import jinja2
 import xlrd
 from markupsafe import Markup
+import json
 
 
 blueprint = Blueprint('nl-central-tracker-2017', __name__)
@@ -16,6 +17,13 @@ blueprint = Blueprint('nl-central-tracker-2017', __name__)
 def jsonify_filter(data):
     return Markup(json.dumps(data))
 
+
+# @blueprint.app_template_filter('order_teams')
+# def order_teams(data):
+	
+	
+
+# 	pass
 
 
 @blueprint.app_template_filter('format_date_time')
@@ -29,6 +37,18 @@ def format_date_time(date_time, format_string):
 	date = xlrd.xldate.xldate_as_datetime(date_time, datemode)
 	date = str(date) # Hacky way of dealing with datetime no JSON serializable
 	return date
+
+
+@blueprint.app_template_filter('format_ranking')
+def format_ranking(place):
+	if place == 1:
+		return "1st"
+	if place == 2:
+		return "2nd"
+	if place == 3:
+		return "3rd"
+	return place + "th"
+
 
 
 @blueprint.app_template_filter('team_lookup')
@@ -54,17 +74,17 @@ def team_lookup(team_code, requested_format):
 			"readable": "Milwaukee Brewers",
 			"readable_short": "Brewers"
 		},
-		"astros":{
-			"abbrev": "HOU",
-			"readable": "Houston Astros",
-			"readable_short": "Astros"
+		"reds":{
+			"abbrev": "CIN",
+			"readable": "Cincinnati Reds",
+			"readable_short": "Reds"
 		},
 	}
 
-	# print team_code
-	# print team_lookup
-	# pass
 	return team_identifiers[team_code][requested_format]
+
+
+
 
 @blueprint.app_template_global('merge_data')
 def merge_data(**sheets):
@@ -81,8 +101,10 @@ def merge_data(**sheets):
         team['current_division_rank'] = team['history'][len(team['history']) - 1]['division_rank']
 
         data.append(team)
+	
+    newlist = sorted(data, key=lambda k: k['current_games_back']) 
 
-    return data
+    return newlist
 
 
 def team_history(games):
@@ -102,7 +124,7 @@ def team_history(games):
         event['runs_allowed'] = game['RUNS_ALLOWED']
         event['division_rank'] = game['RANK']
         event['games_above_below_500'] = game['ABOVE_500']
-        event['games_back'] = game['GB'] if game['GB'] > 0 else "-"
+        event['games_back'] = game['GB']
         event['location'] = home_or_away(game)
         event['record'] = get_current_record(game)
         # event['game_date'] = excel_date(game['DATE'])

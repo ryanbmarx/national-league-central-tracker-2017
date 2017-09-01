@@ -1,12 +1,15 @@
-{% set data = merge_data(cubs=CUBS_DATA, brewers=BREWERS_DATA) %}
+{# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
+{% set data = merge_data(cubs=CUBS_DATA,cardinals=CARDINALS_DATA, brewers=BREWERS_DATA) %}
 
 {% macro standings_block(team) %}
-	{% set svg_url = team|team_lookup('abbrev') %}
-	{% set team_name = team|team_lookup('readable') %}
-	{{ data[team] }}
-	<div class='standing standing--{{ team }}'>
+	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
+	{% set place = team['current_division_rank']|format_ranking %}
+	{% set team_name = team['team_name']|team_lookup('readable') %}
+	{% set games_back = team['current_games_back'] %}
+	{% set current_record = team['current_record']%}
 
-		<h2 class='standing__place'>1st PLACE</h2>
+	<div class='standing standing--{{ team["team_name"] }}'>
+		<h2 class='standing__place'>{{ place|upper }} PLACE</h2>
 		<div class='standing__logo'>
 			<svg class="arrow-right">
 			  <use xlink:href="#{{ svg_url }}" />
@@ -15,20 +18,20 @@
 		<h3 class='standing__team'>{{ team_name }}</h3>
 		<dl class='standing__stats'>
 			<dt>Record</dt>
-			<dd>XX-XX</dd>			
+			<dd>{{ current_record['wins'] }}-{{ current_record['losses'] }}</dd>			
 			<dt>Games back</dt>
-			<dd>XX</dd>
+			<dd>{{ games_back }}</dd>
 		</dl>
 	</div>
 
 {% endmacro%}
 
-{# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
-
-
-{{ data[0]['full_name'] }}
 
 {% block content %}
+	<script>
+		window.data = {{ data|jsonify }};
+	</script>
+
 	<div style='display:none;height:0'>{% include 'img/sprite.svg' %}</div>
 	<div class='graphic-wrapper'>
 		<section class='intro'>
@@ -36,8 +39,8 @@
 			<p>Standings as of {{ updated_date|format_date_time('s') }}</p>
 		</section>
 		<section class='standings'>
-
-			{% for team in ['cubs', 'cardinals', 'pirates', 'brewers', 'astros'] %}
+			
+			{% for team in data %}
 				{{ standings_block(team) }}
 			{% endfor %}			
 		</section>
@@ -50,12 +53,12 @@
 
 {% block library_scripts %}
 {# Uncomment this if you are using libraries such as jQuery #}
-{# <script src="//{{ ROOT_URL }}/js/vendor.min.js"></script> #}
+<script src="//{{ ROOT_URL }}/js/vendor.min.js"></script>
 {% endblock %}
 
 {% block scripts %}
 {# Uncomment this if you are using custom JavaScript #}
-{# <script src="//{{ ROOT_URL }}/js/app.min.js"></script> #}
+<script src="//{{ ROOT_URL }}/js/app.min.js"></script>
 <script>
 (function(document) {
   var CSS = [
