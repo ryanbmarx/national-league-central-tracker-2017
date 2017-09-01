@@ -1,0 +1,109 @@
+$standing-margin: 15px;
+$logo_height: 50px;
+$logo_width: $logo_height;
+
+$cardinals_color:red;
+$brewers_color: navy;
+$astros_color:red;
+$pirates_color: black;
+
+.standings{
+	display: flex;
+	align-items: stretch;
+	justify-content: flex-start;
+	flex-wrap:nowrap;
+	flex-direction: row;
+
+}
+
+.trb_mainContent .standing{
+	@include clearfix();
+	margin-right: $standing-margin;
+	flex: 1; // Make each standing evenly fill across x-axis
+
+	&:last-child{
+		margin-right:0;
+	}
+
+	&__place{
+		@include sans-serif();
+		font-weight: bold;
+		margin: 0 0 7px 0;
+		padding: 0 0 7px 0;
+		border-bottom: 2px solid black;
+		text-transform:uppercase;
+	}
+
+	&__team{
+		@include label7();
+		margin: 0 0 7px #{$logo_width + 15};
+	}
+
+	&__stats{
+		@include agate();
+		margin: 0 0 0 #{$logo_width + 15};
+		padding: 0;
+
+		dt, dd{
+			display:inline;
+			margin: 0;
+			padding:0;
+		}
+
+		dt:after{
+			content: ':';
+		}
+
+		dd:after{
+			content:'';
+			display:block;
+		}
+	}
+
+	&__logo{
+		height: $logo_height;
+		width: $logo_width;
+		float:left;
+
+		svg{
+			width: $logo_width;
+			height: $logo_height;
+			margin: 0 0 0 0;
+		}
+	}
+}
+
+
+.standing{
+	&--cubs{
+		.standing__place{
+			border-bottom-color:$cubs-blue;
+		}
+	}
+
+	&--cardinals{
+		.standing__place{
+			border-bottom-color:$cardinals_color;
+		}
+	}
+
+	&--brewers{
+		.standing__place{
+			border-bottom-color:$brewers_color;
+		}
+	}
+
+	&--astros{
+		.standing__place{
+			border-bottom-color:$astros_color;
+		}
+	}
+
+	&--pirates{
+		.standing__place{
+			border-bottom-color:$pirates_color;
+		}
+	}
+
+
+}
