@@ -259,23 +259,6 @@ class MultilineChart{
 		// 	}
 		// }
 
-		const chartInner = svg
-			.append('g')
-			.classed('chart-inner', true)
-			.attr('width', innerWidth)
-			.attr('height', innerHeight)
-			.attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-		const labels = svg
-			.append('g')
-			.classed('labels', true)
-			.style('font-family','Arial, sans-serif')
-			.style('font-size','13px')
-			.style('font-weight','bold')
-			.style('line-height', '1.3em')
-			.attr('text-anchor', 'middle')
-			.attr('dy', '1em');
-
 			// .attr('width', width)
 			// .attr('height', innerHeight)
 			// .attr('transform', `translate(${margin.left}, ${margin.top})`);
@@ -349,6 +332,12 @@ class MultilineChart{
 			.attr('transform', `translate(${margin.left}, ${margin.top})`)
 			.call(yAxisFunc);
 
+		yAxis.selectAll('.tick line')
+			.attr('x2', innerWidth)
+			.style('stroke', '#ddd');
+
+		yAxis.select('.domain').remove();
+
 
 		const xAxis = svg
 			.append('g')
@@ -359,6 +348,24 @@ class MultilineChart{
 			.remove();
 
 			// TODO: ADD SOLID BLACK BASELINE
+
+
+		const chartInner = svg
+			.append('g')
+			.classed('chart-inner', true)
+			.attr('width', innerWidth)
+			.attr('height', innerHeight)
+			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+		const labels = svg
+			.append('g')
+			.classed('labels', true)
+			.style('font-family','Arial, sans-serif')
+			.style('font-size','13px')
+			.style('font-weight','bold')
+			.style('line-height', '1.3em')
+			.attr('text-anchor', 'middle')
+			.attr('dy', '1em');
 
 		chartInner.append('line')
 			.attr('x0',0)
