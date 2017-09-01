@@ -1,11 +1,4 @@
-$standing-margin: 15px;
-$logo_height: 50px;
-$logo_width: $logo_height;
 
-$cardinals_color:red;
-$brewers_color: navy;
-$astros_color:red;
-$pirates_color: black;
 
 .standings{
 	display: flex;
@@ -30,7 +23,7 @@ $pirates_color: black;
 		font-weight: bold;
 		margin: 0 0 7px 0;
 		padding: 0 0 7px 0;
-		border-bottom: 2px solid black;
+		border-bottom: 3px solid black;
 		text-transform:uppercase;
 	}
 
@@ -93,9 +86,9 @@ $pirates_color: black;
 		}
 	}
 
-	&--astros{
+	&--reds{
 		.standing__place{
-			border-bottom-color:$astros_color;
+			border-bottom-color:$reds_color;
 		}
 	}
 
@@ -104,6 +97,15 @@ $pirates_color: black;
 			border-bottom-color:$pirates_color;
 		}
 	}
+}
 
+@media all and (max-width: 849px){
+	// .trb_mainContent .standings{
+	// 	flex-wrap:wrap;
 
+	// 	.standing{
+	// 		width: calc((100% -50px) / 3);
+	// 		flex:none;
+	// 	}	
+	// }
 }

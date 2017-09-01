@@ -1,8 +1,22 @@
 @import 'base-variables';
+
+$standing-margin: 15px;
+$logo_height: 50px;
+$logo_width: $logo_height;
+
+$cardinals_color:#B72126;
+$brewers_color: #D0AC78;
+$reds_color:#C6011F;
+$pirates_color: black;
+
+
+
 @import 'base-mixins';
 
 
-
-
-
 @import 'standings';
+
+.chart{
+	height: 400px;
+	margin: 25px 0;
+}
