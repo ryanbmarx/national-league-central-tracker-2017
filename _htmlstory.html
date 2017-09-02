@@ -1,6 +1,7 @@
 {# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
 {% set data = merge_data(cubs=CUBS_DATA,cardinals=CARDINALS_DATA, brewers=BREWERS_DATA) %}
 
+
 {% macro standings_block(team) %}
 	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
 	{% set place = team['current_division_rank']|format_ranking %}
@@ -11,7 +12,7 @@
 	<div class='standing standing--{{ team["team_name"] }}'>
 		<h2 class='standing__place'>{{ place|upper }} PLACE</h2>
 		<div class='standing__logo'>
-			<svg class="arrow-right">
+			<svg>
 			  <use xlink:href="#{{ svg_url }}" />
 			</svg>
 		</div>
@@ -26,6 +27,30 @@
 
 {% endmacro%}
 
+{% macro next_seven_games(team) %}
+	{% set team_name = team['team_name']|team_lookup('readable') %}
+	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
+
+	<h3 class='next-seven__team'>{{ team_name }}</h3>
+	<div class='next-seven next-seven--{{ team["team_name"]}}'>
+		{% for game in team['next_seven_games'] %}
+			{% set date = game['game_date']|format_date_time('%b %-d') %}
+			{% if game['location'] == 'home' %}
+				{% set home_road = "" %}
+			{% else %}
+				{% set home_road = "@" %}
+			{% endif %}
+			{% set opponent = game['opponent'] %}
+			<div class='next-seven__game game'>
+				<h4 class='game__date'>{{ date }}</h4>
+				<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
+				<svg class='game__opponent-logo'>
+			  		<use xlink:href="#{{ opponent }}" /></use>
+				</svg>
+			</div>
+		{% endfor %}
+	</div>
+{% endmacro %}
 
 {% block content %}
 	<script>
@@ -36,7 +61,7 @@
 	<div class='graphic-wrapper'>
 		<section class='intro'>
 			{{ intro|markdown }}
-			<p>Standings as of {{ updated_date|format_date_time('s') }}</p>
+			<p>Standings as of {{ updated_date|format_date_time('%-I:%M, %p %b %-d') }}</p>
 		</section>
 		<section class='standings'>
 			
@@ -47,6 +72,11 @@
 
 		<section class='horse-race'>
 			<div id='horse-race' class='chart'></div>
+		</section>
+		<section class='next-seven-games'>
+			{% for team in data %}
+				{{ next_seven_games(team) }}
+			{% endfor %}			
 		</section>
 	</div>
 {% endblock content %}

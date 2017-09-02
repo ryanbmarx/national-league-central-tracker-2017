@@ -9,6 +9,7 @@ import jinja2
 import xlrd
 from markupsafe import Markup
 import json
+import datetime
 
 
 blueprint = Blueprint('nl-central-tracker-2017', __name__)
@@ -17,13 +18,6 @@ blueprint = Blueprint('nl-central-tracker-2017', __name__)
 def jsonify_filter(data):
     return Markup(json.dumps(data))
 
-
-# @blueprint.app_template_filter('order_teams')
-# def order_teams(data):
-	
-	
-
-# 	pass
 
 
 @blueprint.app_template_filter('format_date_time')
@@ -35,8 +29,8 @@ def format_date_time(date_time, format_string):
 	# See http://www.lexicon.net/sjmachin/xlrd.html#xlrd.xldate_as_tuple-function
 	datemode = 0
 	date = xlrd.xldate.xldate_as_datetime(date_time, datemode)
-	date = str(date) # Hacky way of dealing with datetime no JSON serializable
-	return date
+	# date = str(date) # Hacky way of dealing with datetime no JSON serializable
+	return date.strftime(format_string)
 
 
 @blueprint.app_template_filter('format_ranking')
@@ -90,7 +84,11 @@ def team_lookup(team_code, requested_format):
 def merge_data(**sheets):
     data = []
 
+
+    
+
     for name,sheet in sheets.items():
+
         team = {}
 
         team['team_name'] = name
@@ -99,13 +97,36 @@ def merge_data(**sheets):
         team['current_record'] = team['history'][len(team['history']) - 1]['record']
         team['current_games_back'] = team['history'][len(team['history']) - 1]['games_back']
         team['current_division_rank'] = team['history'][len(team['history']) - 1]['division_rank']
-
+        team['next_seven_games'] = get_next_seven_games(sheet)
+        
         data.append(team)
 	
     newlist = sorted(data, key=lambda k: k['current_games_back']) 
 
     return newlist
 
+
+def get_next_seven_games(games):
+	game_counter = 0
+	next_seven = []
+
+	for i in range(len(games)):
+		game = games[i]
+
+		try: 
+			game['RUNS'] and game['RUNS_ALLOWED']
+			continue
+		except KeyError:
+			print "FUTURE GAME?", i
+			game_counter += 1
+			next_seven.append({
+				"game_date": game['DATE'],
+				"opponent": game['OPPONENT']
+			})
+			if game_counter >= 7:
+				return next_seven
+	
+	return next_seven
 
 def team_history(games):
     history = []
@@ -127,8 +148,10 @@ def team_history(games):
         event['games_back'] = game['GB']
         event['location'] = home_or_away(game)
         event['record'] = get_current_record(game)
-        # event['game_date'] = excel_date(game['DATE'])
+        event['game_date'] = game['DATE']
 
+        # print xlrd.xldate.xldate_as_datetime(game['DATE'], 0)
+        
         history.append(event)
 
     return history
