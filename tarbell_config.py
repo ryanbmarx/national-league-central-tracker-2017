@@ -138,10 +138,10 @@ def get_next_seven_games(games):
 	return next_seven
 
 def team_history(games):
-	
+
 	history = []
 
-	for game in games:
+	for index,game in enumerate(games):
 		event = {}
 
 		try:
@@ -154,10 +154,10 @@ def team_history(games):
 		# event['runs_scored'] = game['RUNS']
 		# event['runs_allowed'] = game['RUNS_ALLOWED']
 		event['division_rank'] = game['RANK']
-		event['games_above_below_500'] = game['ABOVE_500']
+		# event['games_above_below_500'] = game['ABOVE_500']
 		event['games_back'] = game['GB']
 		# event['location'] = home_or_away(game)
-		event['record'] = get_current_record(game)
+		event['record'] = get_current_record(index, games)
 		event['game_date'] = game['DATE']
 
 		history.append(event)
@@ -171,11 +171,20 @@ def home_or_away(game):
     except KeyError:
         return 'home'
 
-def get_current_record(game):
-	return {
-		"wins": game['TOTAL_WINS'],
-		"losses": game['TOTAL_LOSSES']
+def get_current_record(index, games):
+	
+	running_record = {
+		"wins": 0,
+		"losses": 0
 	}
+
+	for i in range(index + 1):
+		if games[i]['WON'] == 1:
+			running_record['wins'] += 1
+		else:
+			running_record['losses'] += 1
+	
+	return running_record
 
 
 # Google spreadsheet key

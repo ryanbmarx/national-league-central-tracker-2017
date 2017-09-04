@@ -1,5 +1,5 @@
 {# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
-{% set data = merge_data(cubs=CUBS_DATA,cardinals=CARDINALS_DATA, brewers=BREWERS_DATA) %}
+{% set data = merge_data(cubs=CUBS_DATA|sort(attribute="GAME"),cardinals=CARDINALS_DATA|sort(attribute="GAME"), brewers=BREWERS_DATA|sort(attribute="GAME")) %}
 
 {% macro standings_block(team, idx) %}
 	{% set svg_url = team['team_name']|team_lookup('abbrev') %}

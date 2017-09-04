@@ -296,12 +296,12 @@ class MultilineChart{
 		// Find the largest any team has been over .500 and the lowest and team has been below .500
 		const maxGamesForEachTeam = [];
 		data.forEach(d => {
-			maxGamesForEachTeam.push(d3.max(d['history'], g => g['games_above_below_500']));
+			maxGamesForEachTeam.push(d3.max(d['history'], g => (g.record.wins - g.record.losses)));
 		});
 
 		const minGamesForEachTeam = [];
 		data.forEach(d => {
-			minGamesForEachTeam.push(d3.min(d['history'], g => g['games_above_below_500']));
+			minGamesForEachTeam.push(d3.min(d['history'], g => (g.record.wins - g.record.losses)));
 		});
 
 
@@ -384,7 +384,10 @@ class MultilineChart{
 					lineWeight = team.team_name == "cubs" ? 4 : 2;
 			const line = d3.line()
 			    .x(d => xScale(d['game_number']))
-			    .y(d => yScale(d.record.wins - d.record.losses));
+			    .y(d => {
+			    	
+			    	return yScale(d.record.wins - d.record.losses);
+			    });
 			
 
 			chartInner.append("path")
