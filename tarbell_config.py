@@ -108,7 +108,7 @@ def merge_data(**sheets):
         team['current_games_back'] = team['history'][len(team['history']) - 1]['games_back']
         team['current_division_rank'] = team['history'][len(team['history']) - 1]['division_rank']
         team['next_seven_games'] = get_next_seven_games(sheet)
-        
+               
         data.append(team)
 	
     newlist = sorted(data, key=lambda k: k['current_games_back']) 
@@ -127,7 +127,6 @@ def get_next_seven_games(games):
 			game['RUNS'] and game['RUNS_ALLOWED']
 			continue
 		except KeyError:
-			print "FUTURE GAME?", i
 			game_counter += 1
 			next_seven.append({
 				"game_date": game['DATE'],
@@ -140,7 +139,6 @@ def get_next_seven_games(games):
 
 def team_history(games):
     history = []
-
     for game in games:
         event = {}
 
@@ -150,22 +148,19 @@ def team_history(games):
             continue
 
         event['game_number'] = game['GAME']
-        event['opponent'] = game['OPPONENT']
-        event['runs_scored'] = game['RUNS']
-        event['runs_allowed'] = game['RUNS_ALLOWED']
+        # event['opponent'] = game['OPPONENT']
+        # event['runs_scored'] = game['RUNS']
+        # event['runs_allowed'] = game['RUNS_ALLOWED']
         event['division_rank'] = game['RANK']
         event['games_above_below_500'] = game['ABOVE_500']
         event['games_back'] = game['GB']
-        event['location'] = home_or_away(game)
+        # event['location'] = home_or_away(game)
         event['record'] = get_current_record(game)
         event['game_date'] = game['DATE']
-
-        # print xlrd.xldate.xldate_as_datetime(game['DATE'], 0)
         
         history.append(event)
 
     return history
-
 def home_or_away(game):
     try:
         game['ROAD_GAME']

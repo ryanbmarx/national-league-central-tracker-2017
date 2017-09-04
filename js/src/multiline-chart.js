@@ -45,7 +45,7 @@ class MultilineChart{
 			cardinals:'#B72126'
 		}
 
-		console.log(app.teamColors)
+		// console.log(app.teamColors)
 		MultilineChart.initChart(app);
 	}
 	
@@ -382,7 +382,6 @@ class MultilineChart{
 					teamName = team.team_name,
 					lineColor = app.teamColors[teamName],
 					lineWeight = team.team_name == "cubs" ? 4 : 2;
-					console.log(teamName, app.teamColors)
 			const line = d3.line()
 			    .x(d => xScale(d['game_number']))
 			    .y(d => yScale(d['games_above_below_500']));
