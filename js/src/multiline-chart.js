@@ -383,11 +383,9 @@ class MultilineChart{
 					lineColor = app.teamColors[teamName],
 					lineWeight = team.team_name == "cubs" ? 4 : 2;
 			const line = d3.line()
+				// .curve(d3.curveBasisOpen)
 			    .x(d => xScale(d['game_number']))
-			    .y(d => {
-			    	
-			    	return yScale(d.record.wins - d.record.losses);
-			    });
+			    .y(d => yScale(d.record.wins - d.record.losses));
 			
 
 			chartInner.append("path")
