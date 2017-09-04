@@ -384,7 +384,7 @@ class MultilineChart{
 					lineWeight = team.team_name == "cubs" ? 4 : 2;
 			const line = d3.line()
 			    .x(d => xScale(d['game_number']))
-			    .y(d => yScale(d['games_above_below_500']));
+			    .y(d => yScale(d.record.wins - d.record.losses));
 			
 
 			chartInner.append("path")
