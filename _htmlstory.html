@@ -1,8 +1,7 @@
 {# MERGE OUR TABS INTO A SINGLE DATA OBJECT #}
 {% set data = merge_data(cubs=CUBS_DATA,cardinals=CARDINALS_DATA, brewers=BREWERS_DATA) %}
 
-
-{% macro standings_block(team) %}
+{% macro standings_block(team, idx) %}
 	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
 	{% set place = team['current_division_rank']|format_ranking %}
 	{% set team_name = team['team_name']|team_lookup('readable') %}
@@ -23,6 +22,12 @@
 			<dt>Games back</dt>
 			<dd>{{ games_back }}</dd>
 		</dl>
+		{% if idx == 1 %}
+			<dl class='standing__magic-number'>
+				<dt>Magic number</dt>
+				<dd>{{ get_magic_number(data) }}</dd>
+			</dl>
+		{% endif %}
 	</div>
 
 {% endmacro%}
@@ -71,7 +76,7 @@
 			<p class='update-date'>As of {{ updated_date|format_date_time('%-I:%M %p, %b %-d') }}</p>
 			<div class='standings__wrapper'>
 				{% for team in data %}
-					{{ standings_block(team) }}
+					{{ standings_block(team, loop.index) }}
 				{% endfor %}
 			</div>			
 		</section>

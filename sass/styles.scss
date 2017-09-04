@@ -19,6 +19,38 @@ $pirates_color: black;
 	text-align:center;
 }
 
+@mixin stats_dl(){
+	dt, dd{
+		display:inline;
+		margin: 0;
+		padding:0;
+	}
+
+	dt:after{
+		content: ':';
+	}
+
+	dd:after{
+		content:'';
+		display:block;
+	}
+}
+
+@mixin team_specific_standing($color){
+	.standing__place{
+		border-bottom-color:$color;
+	}
+
+	.standing__magic-number{
+		background: $color;
+		color:white;
+
+		dd{
+			color:$color;
+		}
+	}
+}
+
 @import 'standings';
 // @import 'next-seven';
 @import 'next-7';

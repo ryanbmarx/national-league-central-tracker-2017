@@ -35,22 +35,35 @@
 
 	&__stats{
 		@include agate();
+		@include stats_dl();
 		margin: 0 0 0 #{$logo_width + 15};
 		padding: 0;
+		
 
-		dt, dd{
-			display:inline;
-			margin: 0;
-			padding:0;
-		}
+	}
 
-		dt:after{
-			content: ':';
-		}
+	&__magic-number{
+		@include sans-serif();
+		@include stats_dl();
+		// @include clearfix();
+		font-weight: bold;
+		
+		padding: 5px;
+		margin-bottom: 0;
+		border-radius: 5px;
+		text-align: center;
 
-		dd:after{
-			content:'';
-			display:block;
+		dd{
+			background: white;
+			height: 60px;
+			width: 60px;
+			border-radius: 50%;
+			float: right;
+			margin-top: -19px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 30px;
 		}
 	}
 
@@ -70,33 +83,23 @@
 
 .standing{
 	&--cubs{
-		.standing__place{
-			border-bottom-color:$cubs-blue;
-		}
+		@include team_specific_standing($cubs-blue);
 	}
 
 	&--cardinals{
-		.standing__place{
-			border-bottom-color:$cardinals_color;
-		}
+		@include team_specific_standing($cardinals_color);
 	}
 
 	&--brewers{
-		.standing__place{
-			border-bottom-color:$brewers_color;
-		}
+		@include team_specific_standing($brewers_color);
 	}
 
 	&--reds{
-		.standing__place{
-			border-bottom-color:$reds_color;
-		}
+		@include team_specific_standing($reds_color);
 	}
 
 	&--pirates{
-		.standing__place{
-			border-bottom-color:$pirates_color;
-		}
+		@include team_specific_standing($pirates_color);
 	}
 }
 
