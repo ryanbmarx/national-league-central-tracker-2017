@@ -54,7 +54,7 @@ def format_ranking(place):
 		return "2nd"
 	if place == 3:
 		return "3rd"
-	return place + "th"
+	return "{}th".format(place)
 
 
 
@@ -138,29 +138,32 @@ def get_next_seven_games(games):
 	return next_seven
 
 def team_history(games):
-    history = []
-    for game in games:
-        event = {}
+	
+	history = []
 
-        try:
-            event['result'] = game['WON']
-        except KeyError:
-            continue
+	for game in games:
+		event = {}
 
-        event['game_number'] = game['GAME']
-        # event['opponent'] = game['OPPONENT']
-        # event['runs_scored'] = game['RUNS']
-        # event['runs_allowed'] = game['RUNS_ALLOWED']
-        event['division_rank'] = game['RANK']
-        event['games_above_below_500'] = game['ABOVE_500']
-        event['games_back'] = game['GB']
-        # event['location'] = home_or_away(game)
-        event['record'] = get_current_record(game)
-        event['game_date'] = game['DATE']
-        
-        history.append(event)
+		try:
+			event['result'] = game['WON']
+		except KeyError:
+			continue
 
-    return history
+		event['game_number'] = int(game['GAME'])
+		# event['opponent'] = game['OPPONENT']
+		# event['runs_scored'] = game['RUNS']
+		# event['runs_allowed'] = game['RUNS_ALLOWED']
+		event['division_rank'] = game['RANK']
+		event['games_above_below_500'] = game['ABOVE_500']
+		event['games_back'] = game['GB']
+		# event['location'] = home_or_away(game)
+		event['record'] = get_current_record(game)
+		event['game_date'] = game['DATE']
+
+		history.append(event)
+
+	return history
+
 def home_or_away(game):
     try:
         game['ROAD_GAME']
