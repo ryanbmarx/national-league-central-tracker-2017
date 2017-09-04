@@ -10,7 +10,7 @@
 	{% set current_record = team['current_record']%}
 
 	<div class='standing standing--{{ team["team_name"] }}'>
-		<h2 class='standing__place'>{{ place|upper }} PLACE</h2>
+		<h3 class='standing__place'>{{ place|upper }} PLACE</h3>
 		<div class='standing__logo'>
 			<svg>
 			  <use xlink:href="#{{ svg_url }}" />
@@ -27,12 +27,14 @@
 
 {% endmacro%}
 
-{% macro next_seven_games(team) %}
+
+{% macro next_7_games(team) %}
 	{% set team_name = team['team_name']|team_lookup('readable') %}
 	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
 
-	<h3 class='next-seven__team'>{{ team_name }}</h3>
-	<div class='next-seven next-seven--{{ team["team_name"]}}'>
+	<div class='next-7 next-7--{{ team["team_name"]}}'>
+		<h3 class='next-7__team'>{{ team_name }}</h3>
+
 		{% for game in team['next_seven_games'] %}
 			{% set date = game['game_date']|format_date_time('%b %-d') %}
 			{% if game['location'] == 'home' %}
@@ -41,12 +43,14 @@
 				{% set home_road = "@" %}
 			{% endif %}
 			{% set opponent = game['opponent'] %}
-			<div class='next-seven__game game'>
-				<h4 class='game__date'>{{ date }}</h4>
-				<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
-				<svg class='game__opponent-logo'>
-			  		<use xlink:href="#{{ opponent }}" /></use>
-				</svg>
+			<div class='next-7__game game'>
+				<div class='game__inner'>
+					<h4 class='game__date'>{{ date }}</h4>
+					<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
+					<svg class='game__opponent-logo'>
+				  		<use xlink:href="#{{ opponent }}" /></use>
+					</svg>
+				</div>
 			</div>
 		{% endfor %}
 	</div>
@@ -61,22 +65,32 @@
 	<div class='graphic-wrapper'>
 		<section class='intro'>
 			{{ intro|markdown }}
-			<p>Standings as of {{ updated_date|format_date_time('%-I:%M, %p %b %-d') }}</p>
 		</section>
 		<section class='standings'>
-			
-			{% for team in data %}
-				{{ standings_block(team) }}
-			{% endfor %}			
+			<h2 class="subheadline">Standings</h2>
+			<p class='update-date'>As of {{ updated_date|format_date_time('%-I:%M %p, %b %-d') }}</p>
+			<div class='standings__wrapper'>
+				{% for team in data %}
+					{{ standings_block(team) }}
+				{% endfor %}
+			</div>			
 		</section>
 
 		<section class='horse-race'>
+			<h2 class="subheadline">Games above/below .500</h2>
 			<div id='horse-race' class='chart'></div>
 		</section>
-		<section class='next-seven-games'>
-			{% for team in data %}
-				{{ next_seven_games(team) }}
-			{% endfor %}			
+		<section class='next-7-games'>
+			<h2 class="subheadline">Up next</h2>
+			<div class='next-7-games__games-wrapper'>
+				{% for team in data %}
+					{{ next_7_games(team) }}
+				{% endfor %}			
+			</div>
+		</section>
+		<section class='credits'>
+			{{ sources|markdown }}
+			{{ credits|markdown }}
 		</section>
 	</div>
 {% endblock content %}

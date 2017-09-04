@@ -12,12 +12,38 @@ $pirates_color: black;
 
 
 @import 'base-mixins';
-
+@mixin sub_sub_headline(){
+	@include label7();
+	width: 100%;
+	margin: 0 0 7px 0;
+	text-align:center;
+}
 
 @import 'standings';
-@import 'next-seven';
+// @import 'next-seven';
+@import 'next-7';
+
+.subheadline{
+	@include label5();
+	width: 100%;
+	margin: 50px 0 7px 0;
+	text-align:center;
+}
+
 
 .chart{
 	height: 400px;
 	margin: 25px 0;
+}
+
+.trb_mainContent {
+	.update-date{
+		@include sans-serif();
+		margin: 0 0 25px 0;
+		text-align: center;
+	}
+
+	.credits p{
+		@include agate();
+	}
 }

@@ -1,0 +1,70 @@
+/*
+			<div class='next-7__game game'>
+				<h4 class='game__date'>{{ date }}</h4>
+				<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
+				<svg class='game__opponent-logo'>
+			  		<use xlink:href="#{{ opponent }}" /></use>
+				</svg>
+			</div>
+
+*/
+.next-7-games{
+
+	&__games-wrapper{
+		display: flex;
+		align-items: stretch;
+		justify-content: flex-start;
+		flex-wrap:nowrap;
+		flex-direction: row;
+	}
+}
+
+.next-7{
+	flex:1;
+	margin-right: $standing-margin;
+	// background: #eee;
+	&:last-child{
+		margin-right: 0;
+	}
+
+	&__team{
+		@include sub_sub_headline();
+		margin-top: 10px;
+	}
+}
+
+.trb_mainContent .game{
+	background:#eee;
+	margin-bottom:5px;
+
+
+
+	&:last-child{
+		margin-bottom:0;
+	}
+
+	&__inner{
+		padding:10px;
+		display:flex;
+		justify-content:space-between;
+		align-items: center;
+	}
+
+	&__date{
+		@include sans-serif-text(16px, 1em, normal);
+		margin: 0;
+		// width: 70px;
+	}
+
+	&__opponent{
+		@include sans-serif-text(16px, 1em, bold);
+		margin: 0;
+		width: auto !important; // Important hack b/c NGUX constrains all <p> to explicit widths.
+		// width: 70px;
+	}
+
+	&__opponent-logo{
+		width: 50px;
+		height: 50px;
+	}
+}

@@ -1,12 +1,13 @@
 
 
 .standings{
-	display: flex;
-	align-items: stretch;
-	justify-content: flex-start;
-	flex-wrap:nowrap;
-	flex-direction: row;
-
+	&__wrapper{
+		display: flex;
+		align-items: stretch;
+		justify-content: flex-start;
+		flex-wrap:nowrap;
+		flex-direction: row;
+	}
 }
 
 .trb_mainContent .standing{
