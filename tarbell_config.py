@@ -18,6 +18,19 @@ blueprint = Blueprint('nl-central-tracker-2017', __name__)
 def jsonify_filter(data):
     return Markup(json.dumps(data))
 
+@blueprint.app_template_global('get_magic_number')
+def get_magic_number(data):
+	"""
+	takes our team data object, which is created in order of standings, and calculates/returns
+	the magic number for the leading team.
+	"""
+
+	total_games = 162
+	leader_wins = data[0]['current_record']['wins']
+	runner_up_losses = data[1]['current_record']['losses']
+	magic_number =  total_games + 1 - leader_wins - runner_up_losses
+	return magic_number
+
 
 
 @blueprint.app_template_filter('format_date_time')
@@ -83,9 +96,6 @@ def team_lookup(team_code, requested_format):
 @blueprint.app_template_global('merge_data')
 def merge_data(**sheets):
     data = []
-
-
-    
 
     for name,sheet in sheets.items():
 
