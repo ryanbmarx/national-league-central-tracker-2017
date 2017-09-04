@@ -68,3 +68,19 @@
 		height: 50px;
 	}
 }
+
+@media all and (max-width: 849px){
+	.next-7-games__games-wrapper{
+		display: block;
+
+		.next-7{
+			width: 100%;
+			max-width: 280px;
+			margin: 0 auto 5px auto;
+		}
+
+		.next-7__team{
+			margin-top: 25px;
+		}
+	}
+}

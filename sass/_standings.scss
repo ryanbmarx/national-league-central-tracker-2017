@@ -104,12 +104,13 @@
 }
 
 @media all and (max-width: 849px){
-	// .trb_mainContent .standings{
-	// 	flex-wrap:wrap;
-
-	// 	.standing{
-	// 		width: calc((100% -50px) / 3);
-	// 		flex:none;
-	// 	}	
-	// }
+	.trb_mainContent .standings__wrapper{
+		display:block;
+		
+		.standing{
+			width: 100%;
+			margin-right: 0;
+			margin-bottom: 15px;
+		}	
+	}
 }
