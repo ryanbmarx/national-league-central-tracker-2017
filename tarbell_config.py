@@ -18,6 +18,27 @@ blueprint = Blueprint('nl-central-tracker-2017', __name__)
 def jsonify_filter(data):
     return Markup(json.dumps(data))
 
+
+@blueprint.app_template_global('get_games_back')
+def get_games_back(current_team_record, first_place_team_record):
+
+	"""
+	Takes two trecord object and calculates the games back
+	"""
+	first_place_team_wins = first_place_team_record['wins']
+	first_place_team_losses = first_place_team_record['losses']
+	
+	current_team_wins = current_team_record['wins']
+	current_team_losses = current_team_record['losses']
+	
+	games_back = float(((first_place_team_wins - current_team_wins) + (current_team_losses - first_place_team_losses))) / 2
+
+	if games_back.is_integer():
+		# COnventional display is only show decimals when half-games are in play. So, "3.0 games back" should be "3 games back."
+		return int(games_back)	
+	return round(games_back, 1)
+
+
 @blueprint.app_template_global('get_magic_number')
 def get_magic_number(data):
 	"""
@@ -105,13 +126,13 @@ def merge_data(**sheets):
         team['full_name'] = team_lookup(name, 'readable')
         team['history'] = team_history(sheet)
         team['current_record'] = team['history'][len(team['history']) - 1]['record']
-        team['current_games_back'] = team['history'][len(team['history']) - 1]['games_back']
+        # team['current_games_back'] = team['history'][len(team['history']) - 1]['games_back']
         team['current_division_rank'] = team['history'][len(team['history']) - 1]['division_rank']
         team['next_seven_games'] = get_next_seven_games(sheet)
                
         data.append(team)
 	
-    newlist = sorted(data, key=lambda k: k['current_games_back']) 
+    newlist = sorted(data, key=lambda k: k['current_record']['wins'], reverse=True) 
 
     return newlist
 
@@ -155,7 +176,7 @@ def team_history(games):
 		# event['runs_allowed'] = game['RUNS_ALLOWED']
 		event['division_rank'] = game['RANK']
 		# event['games_above_below_500'] = game['ABOVE_500']
-		event['games_back'] = game['GB']
+		# event['games_back'] = game['GB']
 		# event['location'] = home_or_away(game)
 		event['record'] = get_current_record(index, games)
 		event['game_date'] = game['DATE']

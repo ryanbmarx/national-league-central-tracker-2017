@@ -5,8 +5,8 @@
 	{% set svg_url = team['team_name']|team_lookup('abbrev') %}
 	{% set place = team['current_division_rank']|format_ranking %}
 	{% set team_name = team['team_name']|team_lookup('readable') %}
-	{% set games_back = team['current_games_back'] %}
 	{% set current_record = team['current_record']%}
+	{% set games_back = get_games_back(current_record, data[0]['current_record']) %}
 
 	<div class='standing standing--{{ team["team_name"] }}'>
 		<h3 class='standing__place'>{{ place|upper }} PLACE</h3>
