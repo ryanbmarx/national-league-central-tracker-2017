@@ -11,9 +11,10 @@
 	<div class='standing standing--{{ team["team_name"] }}'>
 		<h3 class='standing__place'>{{ place|upper }} PLACE</h3>
 		<div class='standing__logo'>
-			<svg>
+			<img src ='http://{{ ROOT_URL }}/img/logos/{{ svg_url }}.png' />
+			{# <svg>
 			  <use xlink:href="#{{ svg_url }}" />
-			</svg>
+			</svg> #}
 		</div>
 		<h3 class='standing__team'>{{ team_name }}</h3>
 		<dl class='standing__stats'>
@@ -40,7 +41,7 @@
 	<div class='next-7 next-7--{{ team["team_name"]}}'>
 		<h3 class='next-7__team'>{{ team_name }}</h3>
 
-		{% for game in team['next_seven_games'] %}
+		{%- for game in team['next_seven_games'] %}
 			{% set date = game['game_date']|format_date_time('%b %-d') %}
 			{% if game['location'] == 'home' %}
 				{% set home_road = "" %}
@@ -52,12 +53,13 @@
 				<div class='game__inner'>
 					<h4 class='game__date'>{{ date }}</h4>
 					<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
-					<svg class='game__opponent-logo'>
+					<img class='game__opponent-logo' src ='http://{{ ROOT_URL }}/img/logos/{{ opponent }}.png' />
+{# 					<svg class='game__opponent-logo'>
 				  		<use xlink:href="#{{ opponent }}" /></use>
 					</svg>
-				</div>
+ #}				</div>
 			</div>
-		{% endfor %}
+		{%- endfor %}
 	</div>
 {% endmacro %}
 
@@ -66,7 +68,7 @@
 		window.data = {{ data|jsonify }};
 	</script>
 
-	<div style='display:none;height:0'>{% include 'img/sprite.svg' %}</div>
+	{# <div style='display:none;height:0'>{% include 'img/sprite.svg' %}</div> #}
 	<div class='graphic-wrapper'>
 		<section class='intro'>
 			{{ intro|markdown }}
@@ -74,9 +76,10 @@
 		</section>
 		<section class='standings'>
 			<h2 class="subheadline">Standings</h2>
-			<p class='update-date'>As of {{ updated_date|format_date_time('%-I:%M %p, %b %-d') }}</p>
+{# 			<p class='update-date'>As of {{ updated_date|format_date_time('%-I:%M %p, %b %-d') }}</p> #}
+			<p class='update-date'>As of {{ updated_date|format_date_time('%A, %B %-d') }}</p>
 			<div class='standings__wrapper'>
-				{% for team in data %}
+				{%- for team in data %}
 					{{ standings_block(team, loop.index) }}
 				{% endfor %}
 			</div>			
@@ -89,7 +92,7 @@
 		<section class='next-7-games'>
 			<h2 class="subheadline">Up next</h2>
 			<div class='next-7-games__games-wrapper'>
-				{% for team in data %}
+				{%- for team in data %}
 					{{ next_7_games(team) }}
 				{% endfor %}			
 			</div>

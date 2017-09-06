@@ -392,6 +392,7 @@ class MultilineChart{
 				.datum(teamData)
 				.attr("class", `line line--${teamName}`)
 				.attr("d", line)
+				.style('stroke-linejoin','round')
 				.attr('stroke', lineColor)
 				.attr('stroke-width', lineWeight)
 				.attr('fill', 'transparent')
