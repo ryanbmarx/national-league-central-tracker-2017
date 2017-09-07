@@ -182,7 +182,7 @@ def team_history(games):
 		# event['location'] = home_or_away(game)
 		event['record'] = get_current_record(index, games)
 		event['game_date'] = game['DATE']
-
+		event['rank'] = game['RANK']
 		history.append(event)
 
 	return history
