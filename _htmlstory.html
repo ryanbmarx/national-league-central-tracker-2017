@@ -12,9 +12,6 @@
 		<h3 class='standing__place'>{{ place|upper }} PLACE</h3>
 		<div class='standing__logo'>
 			<img src ='http://{{ ROOT_URL }}/img/logos/{{ svg_url }}.png' />
-			{# <svg>
-			  <use xlink:href="#{{ svg_url }}" />
-			</svg> #}
 		</div>
 		<h3 class='standing__team'>{{ team_name }}</h3>
 		<dl class='standing__stats'>
@@ -43,21 +40,13 @@
 
 		{%- for game in team['next_seven_games'] %}
 			{% set date = game['game_date']|format_date_time('%b %-d') %}
-			{% if game['location'] == 'home' %}
-				{% set home_road = "" %}
-			{% else %}
-				{% set home_road = "@" %}
-			{% endif %}
 			{% set opponent = game['opponent'] %}
 			<div class='next-7__game game'>
 				<div class='game__inner'>
 					<h4 class='game__date'>{{ date }}</h4>
-					<p class='game__opponent'>{{ home_road }}{{ opponent }}</p>
+					<p class='game__opponent'>{{ game['road_game'] }}{{ opponent }}</p>
 					<img class='game__opponent-logo' src ='http://{{ ROOT_URL }}/img/logos/{{ opponent }}.png' />
-{# 					<svg class='game__opponent-logo'>
-				  		<use xlink:href="#{{ opponent }}" /></use>
-					</svg>
- #}				</div>
+				</div>
 			</div>
 		{%- endfor %}
 	</div>
@@ -67,7 +56,6 @@
 	<script>
 		window.data = {{ data|jsonify }};
 	</script>
-	{# <div style='display:none;height:0'>{% include 'img/sprite.svg' %}</div> #}
 	<div class='graphic-wrapper'>
 		<section class='intro'>
 			{{ intro|markdown }}
@@ -75,7 +63,6 @@
 		</section>
 		<section class='standings'>
 			<h2 class="subheadline">Standings</h2>
-{# 			<p class='update-date'>As of {{ updated_date|format_date_time('%-I:%M %p, %b %-d') }}</p> #}
 			<p class='update-date'>As of {{ updated_date|format_date_time('%A, %B %-d') }}</p>
 			<div class='standings__wrapper'>
 				{%- for team in data %}

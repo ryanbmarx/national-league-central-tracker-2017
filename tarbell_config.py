@@ -149,9 +149,11 @@ def get_next_seven_games(games):
 			continue
 		except KeyError:
 			game_counter += 1
+			# home_away = 
 			next_seven.append({
 				"game_date": game['DATE'],
-				"opponent": game['OPPONENT']
+				"opponent": game['OPPONENT'],
+				"road_game": '@' if game['ROAD_GAME'] == 1 else ''
 			})
 			if game_counter >= 7:
 				return next_seven
