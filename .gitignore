@@ -9,5 +9,6 @@ node_modules
 css
 js/app.min.js
 js/*.map 
+js/*.min.js 
 .DS_Store
 img/sprite.svg
