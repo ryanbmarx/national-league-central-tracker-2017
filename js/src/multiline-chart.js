@@ -1,32 +1,5 @@
-// import getTribColor from '../utils/getTribColors.js';
+
 import * as d3 from 'd3';
-// import filter from 'lodash.filter';
-// import orderBy from 'lodash.orderby';
-// import monthFormatter from '../utils/month-formatter.js';
-
-// function leapYear(year) {
-// 	// returns true if supplied year is a leap year
-//   return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-// }
-
-// function getLastDate(data, years){
-// 	let lastYear = [];
-// 	years.forEach(y => {
-// 		lastYear.push(parseInt(y));
-// 	})
-// 	lastYear = lastYear.sort().reverse()[0];
-	
-// 	const 	l = data[lastYear].length,
-// 			lastDate = data[lastYear][l-1];
-
-// 	return new Date(lastDate['YEAR'], lastDate['MONTH'] - 1, lastDate['DAY'],0,0,0,0);
-// }
-
-// function monthAxis(month){
-// 	return monthFormatter(month.getMonth());
-// }
-
-
 
 class MultilineChart{
 	constructor(options){
@@ -35,7 +8,7 @@ class MultilineChart{
 		app.data = options.data;
 		app._container = options.container;
 		app.mobileLayoutBreakpoint = 600;
-		app.isMobile = window.innerWidth < 850 ? true : true;
+		app.isMobile = window.innerWidth < app.mobileLayoutBreakpoint ? true : false;
 
 		app.teamColors = {
 			reds:'#C6011F',
