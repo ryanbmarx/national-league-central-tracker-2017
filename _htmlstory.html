@@ -77,7 +77,11 @@
 			<div id='horse-race' class='chart'></div>
 		</section>
 		<section class='next-7-games'>
-			<h2 class="subheadline">Up next</h2>
+					<h2 class="subheadline">Up next</h2>
+						<div class='credits'>
+				{{ note|markdown }}
+			</div>
+
 			<div class='next-7-games__games-wrapper'>
 				{%- for team in data %}
 					{{ next_7_games(team) }}
